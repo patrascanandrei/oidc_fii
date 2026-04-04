@@ -171,6 +171,7 @@ resource "aws_kms_key" "nc_dr_kms_mrk" {
   lifecycle {
     prevent_destroy = true
   }
+  depends_on = [aws_iam_role.your_role_name]
 }
 
 resource "aws_kms_replica_key" "nc_dr_kms_replica" {
