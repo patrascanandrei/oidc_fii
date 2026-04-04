@@ -139,7 +139,7 @@ resource "aws_security_group" "cloudpulse_sg" {
 resource "aws_s3_bucket" "cloudpulse" {
   provider = aws.main
   bucket   = "${var.main_s3_bucket_prefix}-${data.aws_caller_identity.current.account_id}-${data.aws_region.main.name}"
-  tags     = { Name = "${var.main_stack_name}-assets"  }
+  tags     = { Name = "${var.main_stack_name}-assets" }
 }
 
 resource "aws_s3_object" "background" {
