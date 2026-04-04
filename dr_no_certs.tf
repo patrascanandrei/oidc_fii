@@ -2,6 +2,8 @@
 # CloudPulse — DR without custom ACM.
 # ============================================================
 
+data "aws_caller_identity" "current" {}
+
 data "aws_region" "nc_dr_primary" {}
 
 data "aws_region" "nc_dr_secondary_region" {
@@ -175,6 +177,12 @@ resource "aws_kms_key" "nc_dr_kms_mrk" {
   lifecycle {
     prevent_destroy = true
   }
+
+  depends_on = [
+    aws_iam_role.nc_s3_replication,
+    aws_iam_role.nc_dr_iam_ec2
+  ]
+
 }
 
 resource "aws_kms_replica_key" "nc_dr_kms_replica" {
@@ -565,6 +573,15 @@ resource "aws_iam_role_policy" "nc_s3_replication" {
       }
     ]
   })
+}
+
+resource "aws_iam_service_linked_role" "autoscaling" {
+  aws_service_name = "autoscaling.amazonaws.com"
+
+  # This prevents errors if the role already exists in the account
+  lifecycle {
+    ignore_changes = all
+  }
 }
 
 resource "aws_s3_bucket" "nc_dr_s3_primary" {
