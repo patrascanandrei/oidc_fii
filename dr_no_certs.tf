@@ -171,7 +171,10 @@ resource "aws_kms_key" "nc_dr_kms_mrk" {
   lifecycle {
     prevent_destroy = true
   }
-  depends_on = [aws_iam_role.your_role_name]
+  depends_on = [
+    aws_iam_role.nc_s3_replication,
+    aws_iam_role.nc_dr_iam_ec2
+  ]
 }
 
 resource "aws_kms_replica_key" "nc_dr_kms_replica" {
