@@ -12,6 +12,10 @@ data "aws_availability_zones" "nc_dr_primary" {
   state = "available"
 }
 
+output "account_id" {
+  value = data.aws_caller_identity.current.account_id
+}
+
 data "aws_availability_zones" "nc_dr_secondary_az" {
   provider = aws.secondary
   state    = "available"
@@ -171,10 +175,6 @@ resource "aws_kms_key" "nc_dr_kms_mrk" {
   lifecycle {
     prevent_destroy = true
   }
-  depends_on = [
-    aws_iam_role.nc_s3_replication,
-    aws_iam_role.nc_dr_iam_ec2
-  ]
 }
 
 resource "aws_kms_replica_key" "nc_dr_kms_replica" {
