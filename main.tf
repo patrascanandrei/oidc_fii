@@ -2,7 +2,6 @@
 # CloudPulse Infrastructure — Observability
 # ============================================================
 
-data "aws_caller_identity" "current" {}
 
 data "aws_region" "main" {
   provider = aws.main
